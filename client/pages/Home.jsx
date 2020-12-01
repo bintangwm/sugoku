@@ -7,29 +7,29 @@ import {
   TextInput, 
   View
 } from 'react-native';
-// import 
+import { setDifficulty } from '../actions/index'
+import { useDispatch } from 'react-redux'
 
 export default function Home({ navigation }) {
   const [name, setName] = React.useState('');
-
-  React.useEffect(() => {
-    
-  },[name])
+  const dispatch = useDispatch()
 
   function goToGame(difficulty) {
     if (!name) {
       return alert("Name can't be empty!")
     }
+    dispatch(setDifficulty(difficulty))
     navigation.navigate('Game', {
-      difficulty,
+      // difficulty,
       name
     })
-    setName('')
+    // setName('')
   }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Your Name:</Text>
+      <Text style={styles.title}>SUDO-Q</Text>
+      <Text>Input your name:</Text>
       <TextInput
         style={{ height: 40, borderColor: 'gray', borderWidth: 1, width: '80%' }}
         onChangeText={text => setName(text)}
@@ -56,5 +56,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 4,
     flexDirection: 'row'
+  },
+  title: {
+    fontSize: 30
   }
 });

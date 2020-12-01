@@ -5,11 +5,15 @@ import {
   View,
   Button
 } from 'react-native';
+import { useDispatch } from 'react-redux'
+import { resetGame } from '../actions/index'
 
 export default function Finish({ navigation, route }) {
   const { name, score } = route.params
+  const dispatch = useDispatch()
 
   function goToHomeScreen() {
+    dispatch(resetGame())
     navigation.navigate('Home')
   }
 

@@ -2,30 +2,30 @@ import { createStore, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 const initialState = {
-  board: [
-    [1, 2, 3],
-    [1, 2, 3],
-    [1, 2, 3]
-  ],
-  playerBoard: []
+  board: [],
+  playerBoard: [],
+  difficulty: 'random',
+  loading: true,
+  status: 'unsolved',
+  username: ''
 }
 
 function reducer(state=initialState, action) {
   let newBoard = []
   switch (action.type) {
+    case 'RESET_GAME':
+      return {...state, difficulty: 'random', board: [], loading: true, status: 'unsolved', playerBoard: [] };
+    case 'SET_DIFFICULTY':
+      return {...state, difficulty: action.payload};
+    case 'SET_STATUS':
+      console.log(action.payload)
+      return {...state, status: action.payload};
+    case 'SET_LOADING':
+      return {...state, loading: action.payload};
     case 'FETCH_BOARD':
       newBoard = action.payload
       return {...state, board: newBoard, playerBoard: newBoard};
     case 'HANDLE_CHANGE':
-      // for (let i = 0; i < 9; i++) {
-      //   for (let j = 0; j < 9; j++) {
-      //     if (i === +action.payload.i && j === +action.payload.j) {
-      //       newBoard.push(action.payload.value)
-      //     } else {
-      //       newBoard.push(state.playerBoard[i][j])
-      //     }
-      //   }
-      // }
       let value = +action.payload.value 
       if (isNaN(value) || !value || value > 9 || value < 1) {
         value = 0
@@ -38,8 +38,6 @@ function reducer(state=initialState, action) {
           return item
         })
       })
-      console.log(newBoard);
-      // return state
       return {...state, playerBoard: newBoard};
     default:
       return state
