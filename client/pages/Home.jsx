@@ -7,6 +7,7 @@ import {
   TextInput, 
   View
 } from 'react-native';
+// import 
 
 export default function Home({ navigation }) {
   const [name, setName] = React.useState('');

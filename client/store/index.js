@@ -6,7 +6,8 @@ const initialState = {
     [1, 2, 3],
     [1, 2, 3],
     [1, 2, 3]
-  ]
+  ],
+  playerBoard: []
 }
 
 function reducer(state=initialState, action) {
@@ -14,28 +15,32 @@ function reducer(state=initialState, action) {
   switch (action.type) {
     case 'FETCH_BOARD':
       newBoard = action.payload
-      return {...state, board: newBoard};
+      return {...state, board: newBoard, playerBoard: newBoard};
     case 'HANDLE_CHANGE':
-      // console.log(action.payload)
-      // newBoard = state.board.map(itemI => {
-      //   return itemI.map(item => {
-      //     if (condition) {
-            
+      // for (let i = 0; i < 9; i++) {
+      //   for (let j = 0; j < 9; j++) {
+      //     if (i === +action.payload.i && j === +action.payload.j) {
+      //       newBoard.push(action.payload.value)
+      //     } else {
+      //       newBoard.push(state.playerBoard[i][j])
       //     }
-      //   })
-      // })
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-          if (i === +action.payload.i && j === +action.payload.j) {
-            newBoard.push(action.payload.value)
-          } else {
-            newBoard.push(state.board[i][j])
-          }
-        }
+      //   }
+      // }
+      let value = +action.payload.value 
+      if (isNaN(value) || !value || value > 9 || value < 1) {
+        value = 0
       }
+      newBoard = state.playerBoard.map((row, i) => {
+        return row.map((item, j) => {
+          if (i === +action.payload.i && j === +action.payload.j) {
+            return value
+          }
+          return item
+        })
+      })
       console.log(newBoard);
       // return state
-      return {...state, board: newBoard};
+      return {...state, playerBoard: newBoard};
     default:
       return state
   }
@@ -45,7 +50,5 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(
   applyMiddleware(thunk)
 ));
-
-// const store = createStore(reducer)
 
 export default store

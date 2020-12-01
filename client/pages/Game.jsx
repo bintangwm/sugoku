@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text, 
   View,
-  FlatList,
   Button,
   TextInput
 } from 'react-native';
@@ -13,6 +12,7 @@ import Row from '../components/Row'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchBoard, validateResult } from '../actions/index'
 import { changeNumber } from '../actions/index'
+import InputBoard from '../components/InputBoard'
 
 export default function Game({ navigation, route }) {
   const board = useSelector(store => store.board)
@@ -31,16 +31,6 @@ export default function Game({ navigation, route }) {
     })
   }
 
-  function handleChangeNumber(value, i, j) {
-    if (!value) {
-      value = 0
-    }
-    const payload = {
-      i, j, value
-    }
-    dispatch(changeNumber(payload))
-  }
-
   return (
     <View style={styles.container}>
       {/* <Text>{ JSON.stringify(board) }</Text> */}
@@ -52,26 +42,20 @@ export default function Game({ navigation, route }) {
             <View key={i} style={ styles.rowItem }>
               {
                 rowItem.map((item, j) => (
-                  <View key={j} style={styles.boardItem}>
-                    {/* <Text>{item}</Text> */}
-                    {/* {
-                      (item == "" || item == "0") 
-                        ? <Text>{item}</Text>
-                        // : <TextInput 
-                        //   style={styles.boardValue}
-                        //   keyboardType='numeric'
-                        //   defaultValue={item}
-                        //   // onChangeText={number => handleChangeNumber(number, i, j)}
-                        // />
-                        : <Text style={{color: 'red'}}>{item}</Text>
-                    } */}
-                    <TextInput 
-                      style={styles.boardValue}
-                      keyboardType='numeric'
-                      value={item.toString()}
-                      onChangeText={number => handleChangeNumber(number, i, j)}
-                    />
-                  </View>
+                  // <View key={j} style={styles.boardItem}>
+                  //   <InputBoard
+                  //     item={item}
+                  //     i={i}
+                  //     j={j}
+                  //   />
+                  // </View>
+                  
+                  <InputBoard
+                    key={j} 
+                    item={item}
+                    i={i}
+                    j={j}
+                  />
                 ))
               }
             </View>
@@ -92,20 +76,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 40,
     height: 40,
-    backgroundColor: 'skyblue',
-    borderWidth: 0.5,
-  },
-  boardValue: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    // width: 40,
-    // height: 40,
     // backgroundColor: 'skyblue',
-    // borderWidth: 0.5,
+    borderWidth: 0.5,
   },
   rowItem:{
     width: 120, height: 120,
-    backgroundColor: 'powderblue',
+    // backgroundColor: 'powderblue',
     flexDirection: 'row', 
     flexWrap: 'wrap',
   },
@@ -121,7 +97,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 363,
-    width: 363,
-    borderWidth: 0.5
+    width: 363
   }
 });
