@@ -89,12 +89,9 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   leaderBoardHeader: {
-    flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    flexDirection: 'row'
   },
   leaderBoardItem: {
-    // flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

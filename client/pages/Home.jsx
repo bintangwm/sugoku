@@ -36,8 +36,8 @@ export default function Home({ navigation }) {
       <View style={styles.buttonDifficulty}>
         <Button color='#15d151' title='Easy' onPress={() => goToGame('easy')}/>
         <Button color='#259ef5' title='Medium' onPress={() => goToGame('medium')}/>
-        <Button color='red' style={styles.buttonDiff} title='Hard' onPress={() => goToGame('hard')}/>
-        <Button color='grey' style={styles.buttonDiff} title='Random' onPress={() => goToGame('random')}/>
+        <Button color='red' title='Hard' onPress={() => goToGame('hard')}/>
+        <Button color='grey' title='Random' onPress={() => goToGame('random')}/>
       </View>
     </ImageBackground>
   );
@@ -45,9 +45,7 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
     justifyContent: 'center',
     flex: 1, alignItems: 'center', justifyContent: 'center'
   },
@@ -58,12 +56,6 @@ const styles = StyleSheet.create({
     width: 300,
     justifyContent: 'space-around',
     flexDirection: 'row',
-  },
-  buttonDiff:{
-    // flex: 2,
-    // textAlignVertical: 'center',
-    // textAlign: 'center',
-    // width: 40
   },
   title: {
     fontSize: 50,

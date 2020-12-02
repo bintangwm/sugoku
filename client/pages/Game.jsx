@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   Alert,
   ImageBackground,
-  ScrollView,
   BackHandler
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
@@ -87,8 +86,7 @@ export default function Game({ navigation, route }) {
 
   return (
     <ImageBackground source={bgImage} style={styles.imageBackground}>
-      {/* <Text style={styles.title}>SUDO-Q</Text> */}
-      <Text style={styles.time}>Time: {time}</Text>
+      <Text style={styles.time}>Time (second): {time}</Text>
       <StatusBar style="auto" />
       <View style={styles.board}>
         {
