@@ -8,24 +8,19 @@ import {
   View
 } from 'react-native';
 import { ImageBackground } from 'react-native';
-import { setDifficultyAndName } from '../actions/index'
-import { useDispatch } from 'react-redux'
 import bgImage from '../assets/peach.jpg'
 
 export default function Home({ navigation }) {
   const [name, setName] = React.useState('');
-  const dispatch = useDispatch()
 
   function goToGame(difficulty) {
     if (!name) {
       return Alert.alert("Input your name!","Name can't be empty!")
     }
-    const payload = {
+    navigation.navigate('Game', {
       difficulty,
       name
-    }
-    dispatch(setDifficultyAndName(payload))
-    navigation.navigate('Game')
+    })
     setName('')
   }
 

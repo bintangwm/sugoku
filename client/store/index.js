@@ -4,21 +4,20 @@ import thunk from 'redux-thunk'
 const initialState = {
   board: [],
   playerBoard: [],
-  difficulty: 'random',
   loading: true,
   status: 'notStarted',
-  name: '',
-  isValidate: false
+  isValidate: false,
+  time: 0
 }
 
 function reducer(state=initialState, action) {
   let newBoard = []
   let isValidate = state.isValidate
   switch (action.type) {
+    case 'SET_TIME':
+      return {...state, time: state.time++};
     case 'RESET_GAME':
-      return {...state, difficulty: 'random', board: [], loading: true, status: 'notStarted', playerBoard: [], name: '' };
-    case 'SET_DIFFICULTY_AND_NAME':
-      return {...state, difficulty: action.payload.difficulty, name: action.payload.name};
+      return {...state, difficulty: 'random', board: [], loading: true, status: 'notStarted', playerBoard: [] };
     case 'SET_STATUS':
       if (action.currentStatus === state.status) {
         isValidate = !isValidate
@@ -27,8 +26,6 @@ function reducer(state=initialState, action) {
       return {...state, status: action.status, isValidate: isValidate};
     case 'SET_LOADING':
       return {...state, loading: action.payload};
-    case 'SET_NAME':
-      return {...state, name: action.payload};
     case 'FETCH_BOARD':
       newBoard = action.payload
       return {...state, board: newBoard, playerBoard: newBoard};

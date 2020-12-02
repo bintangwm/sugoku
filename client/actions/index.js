@@ -52,12 +52,12 @@ export function validateResult(payload, currentStatus) {
   }
 }
 
-export function setDifficultyAndName(payload) {
-  return {
-    type: 'SET_DIFFICULTY_AND_NAME',
-    payload
-  }
-}
+// export function setDifficultyAndName(payload) {
+//   return {
+//     type: 'SET_DIFFICULTY_AND_NAME',
+//     payload
+//   }
+// }
 
 export function setLoading(payload) {
   return {

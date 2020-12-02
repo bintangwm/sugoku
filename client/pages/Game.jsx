@@ -6,45 +6,58 @@ import {
   Text, 
   View,
   Button,
-  TextInput,
   ActivityIndicator,
   Alert,
-  ImageBackground
+  ImageBackground,
+  ScrollView
 } from 'react-native';
-import Row from '../components/Row'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchBoard, validateResult, solveResult } from '../actions/index'
-import { setDifficulty } from '../actions/index'
 import InputBoard from '../components/InputBoard'
 import bgImage from '../assets/batik.jpg'
 
 export default function Game({ navigation, route }) {
   const board = useSelector(store => store.board)
   const playerBoard = useSelector(store => store.playerBoard)
-  const difficulty = useSelector(store => store.difficulty)
   const loading = useSelector(store => store.loading)
   const status = useSelector(store => store.status)
   const isValidate = useSelector(store => store.isValidate)
+  // const time = useSelector(store => store.time)
+  const [time, setTime] = React.useState(0)
   const dispatch = useDispatch()
-  // const { name } = route.params
+  const { name, difficulty } = route.params
   
   useEffect(() => {
     dispatch(fetchBoard(difficulty))
+    timeStart()
   }, [])
 
   useEffect(() => {
     switch (status) {
       case 'notStarted':
-        Alert.alert('Game Started!', "Solve the Sudoku as fast as you can! :D")
+        // Alert.alert('Game Started!', "Solve the Sudoku as fast as you can! :D")
         break;
       case 'solved':
-        Alert.alert('Congratulation', "You've solved the game! Yeayyy!")
-        return navigation.navigate('Finish')
+        // Alert.alert('Congratulation', "You've solved the game! Yeayyy!")
+        return navigation.navigate('Finish', { name, difficulty })
       default:
         Alert.alert(status, `Awww, seems your work is still ${status}`)
         break;
     }
   }, [status, isValidate])
+
+  function timeStart() {
+    // var timer = setInterval(frame, 1000);
+    // function frame() {
+    //   // if (time >= 5) {
+    //     //   clearInterval(timer);
+    //     // } else {
+    //       // }
+    //       const timeUpdate = time + 1
+    //       console.log(timeUpdate, 'timer');
+    //   setTime(timeUpdate)
+    // }
+  }
 
   function validateBoard() {
     dispatch(validateResult(playerBoard, status))
@@ -56,16 +69,16 @@ export default function Game({ navigation, route }) {
 
   if (loading) {
     return(
-    <View style={[styles.container, styles.horizontal]}>
+    <ImageBackground source={bgImage} style={styles.imageBackground}>
       <ActivityIndicator size="large" color="grey" />
-    </View>
+    </ImageBackground>
     )
   }
 
   return (
-    <ImageBackground source={bgImage} style={styles.container}>
-    {/* <View style={styles.container}> */}
+    <ImageBackground source={bgImage} style={styles.imageBackground}>
       <Text style={styles.title}>SUDO-Q</Text>
+      <Text>Time: {time}</Text>
       <StatusBar style="auto" />
       <View style={styles.board}>
         {
@@ -95,7 +108,6 @@ export default function Game({ navigation, route }) {
           onPress={solveBoard}
         />
       </View>
-    {/* </View> */}
     </ImageBackground>
   );
 }
@@ -114,9 +126,8 @@ const styles = StyleSheet.create({
     // flexWrap: 'wrap',
     // borderWidth: 0.3
   },
-  container: {
+  imageBackground: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -128,19 +139,12 @@ const styles = StyleSheet.create({
     height: 365,
     width: 365
   },
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  },
   title: {
     fontSize: 30,
-    // marginTop: 20,
     marginBottom: 50
   },
   buttonWrap:{
     flexDirection: 'row', 
-    // flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-around',
     height: 50,

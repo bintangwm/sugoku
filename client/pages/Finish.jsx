@@ -2,18 +2,15 @@ import React from 'react';
 import { 
   StyleSheet,
   Text, 
-  View,
   Button,
   ImageBackground
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { resetGame } from '../actions/index'
 import bgImage from '../assets/bohemian.jpg'
 
 export default function Finish({ navigation, route }) {
-  // const { name, score } = route.params
-  const name = useSelector(store => store.name)
-  const difficulty = useSelector(store => store.difficulty)
+  const { name, difficulty } = route.params
   const dispatch = useDispatch()
 
   function goToHomeScreen() {
