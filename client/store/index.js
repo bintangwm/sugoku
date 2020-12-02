@@ -6,22 +6,29 @@ const initialState = {
   playerBoard: [],
   difficulty: 'random',
   loading: true,
-  status: 'unsolved',
-  username: ''
+  status: 'notStarted',
+  name: '',
+  isValidate: false
 }
 
 function reducer(state=initialState, action) {
   let newBoard = []
+  let isValidate = state.isValidate
   switch (action.type) {
     case 'RESET_GAME':
-      return {...state, difficulty: 'random', board: [], loading: true, status: 'unsolved', playerBoard: [] };
-    case 'SET_DIFFICULTY':
-      return {...state, difficulty: action.payload};
+      return {...state, difficulty: 'random', board: [], loading: true, status: 'notStarted', playerBoard: [], name: '' };
+    case 'SET_DIFFICULTY_AND_NAME':
+      return {...state, difficulty: action.payload.difficulty, name: action.payload.name};
     case 'SET_STATUS':
-      console.log(action.payload)
-      return {...state, status: action.payload};
+      if (action.currentStatus === state.status) {
+        isValidate = !isValidate
+      }
+      console.log(action.status)
+      return {...state, status: action.status, isValidate: isValidate};
     case 'SET_LOADING':
       return {...state, loading: action.payload};
+    case 'SET_NAME':
+      return {...state, name: action.payload};
     case 'FETCH_BOARD':
       newBoard = action.payload
       return {...state, board: newBoard, playerBoard: newBoard};

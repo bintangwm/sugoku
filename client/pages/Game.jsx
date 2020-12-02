@@ -7,40 +7,47 @@ import {
   View,
   Button,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  ImageBackground
 } from 'react-native';
 import Row from '../components/Row'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchBoard, validateResult, solveResult } from '../actions/index'
 import { setDifficulty } from '../actions/index'
 import InputBoard from '../components/InputBoard'
+import bgImage from '../assets/batik.jpg'
 
 export default function Game({ navigation, route }) {
   const board = useSelector(store => store.board)
   const playerBoard = useSelector(store => store.playerBoard)
   const difficulty = useSelector(store => store.difficulty)
   const loading = useSelector(store => store.loading)
-  const loadingValidate = useSelector(store => store.loadingValidate)
   const status = useSelector(store => store.status)
+  const isValidate = useSelector(store => store.isValidate)
   const dispatch = useDispatch()
-  const { name } = route.params
+  // const { name } = route.params
   
   useEffect(() => {
     dispatch(fetchBoard(difficulty))
   }, [])
 
   useEffect(() => {
-    if (status === 'solved') {
-      alert(status)
-      return navigation.navigate('Finish', {
-        name: name || 'unknown'
-      })
+    switch (status) {
+      case 'notStarted':
+        Alert.alert('Game Started!', "Solve the Sudoku as fast as you can! :D")
+        break;
+      case 'solved':
+        Alert.alert('Congratulation', "You've solved the game! Yeayyy!")
+        return navigation.navigate('Finish')
+      default:
+        Alert.alert(status, `Awww, seems your work is still ${status}`)
+        break;
     }
-    alert(status)
-  }, [status])
+  }, [status, isValidate])
 
   function validateBoard() {
-    dispatch(validateResult(playerBoard))
+    dispatch(validateResult(playerBoard, status))
   }
 
   function solveBoard() {
@@ -56,7 +63,8 @@ export default function Game({ navigation, route }) {
   }
 
   return (
-    <View style={styles.container}>
+    <ImageBackground source={bgImage} style={styles.container}>
+    {/* <View style={styles.container}> */}
       <Text style={styles.title}>SUDO-Q</Text>
       <StatusBar style="auto" />
       <View style={styles.board}>
@@ -77,15 +85,18 @@ export default function Game({ navigation, route }) {
           ))
         }
       </View>
-      <Button
-        title="Validate"
-        onPress={validateBoard}
-      />
-      <Button
-        title="Solve"
-        onPress={solveBoard}
-      />
-    </View>
+      <View style={styles.buttonWrap}>
+        <Button
+          title="Validate"
+          onPress={validateBoard}
+        />
+        <Button
+          title="Solve"
+          onPress={solveBoard}
+        />
+      </View>
+    {/* </View> */}
+    </ImageBackground>
   );
 }
 
@@ -123,6 +134,17 @@ const styles = StyleSheet.create({
     padding: 10
   },
   title: {
-    fontSize: 30
+    fontSize: 30,
+    // marginTop: 20,
+    marginBottom: 50
+  },
+  buttonWrap:{
+    flexDirection: 'row', 
+    // flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    height: 50,
+    width: 200,
+    marginTop: 20
   }
 });

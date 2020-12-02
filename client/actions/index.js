@@ -35,7 +35,7 @@ const encodeParams = (params) =>
   .map(key => key + '=' + `%5B${encodeBoard(params[key])}%5D`)
   .join('&');
 
-export function validateResult(payload) {
+export function validateResult(payload, currentStatus) {
   const data = { board: payload}
   return (dispatch) => {
     fetch('https://sugoku.herokuapp.com/validate', {
@@ -46,18 +46,15 @@ export function validateResult(payload) {
       .then(response => response.json())
       .then(response => {
         const status = response.status
-        dispatch({ type: 'SET_STATUS', payload: status })
+        dispatch({ type: 'SET_STATUS', status: status, currentStatus })
       })
       .catch(console.warn)
-      .finally(() => {
-        // console.log('validate finish');
-      })
   }
 }
 
-export function setDifficulty(payload) {
+export function setDifficultyAndName(payload) {
   return {
-    type: 'SET_DIFFICULTY',
+    type: 'SET_DIFFICULTY_AND_NAME',
     payload
   }
 }

@@ -7,8 +7,10 @@ import {
   TextInput, 
   View
 } from 'react-native';
-import { setDifficulty } from '../actions/index'
+import { ImageBackground } from 'react-native';
+import { setDifficultyAndName } from '../actions/index'
 import { useDispatch } from 'react-redux'
+import bgImage from '../assets/peach.jpg'
 
 export default function Home({ navigation }) {
   const [name, setName] = React.useState('');
@@ -16,18 +18,19 @@ export default function Home({ navigation }) {
 
   function goToGame(difficulty) {
     if (!name) {
-      return alert("Name can't be empty!")
+      return Alert.alert("Input your name!","Name can't be empty!")
     }
-    dispatch(setDifficulty(difficulty))
-    navigation.navigate('Game', {
-      // difficulty,
+    const payload = {
+      difficulty,
       name
-    })
-    // setName('')
+    }
+    dispatch(setDifficultyAndName(payload))
+    navigation.navigate('Game')
+    setName('')
   }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ImageBackground style={styles.container} source={bgImage}>
       <Text style={styles.title}>SUDO-Q</Text>
       <Text>Input your name:</Text>
       <TextInput
@@ -36,28 +39,39 @@ export default function Home({ navigation }) {
         value={name}
       />
       <View style={styles.buttonDifficulty}>
-        <Button title='Easy' onPress={() => goToGame('easy')}/>
-        <Button title='Medium' onPress={() => goToGame('medium')}/>
-        <Button title='Hard' onPress={() => goToGame('hard')}/>
-        <Button title='Random' onPress={() => goToGame('random')}/>
+        <Button style={styles.buttonDiff} title='Easy' onPress={() => goToGame('easy')}/>
+        <Button style={styles.buttonDiff} title='Medium' onPress={() => goToGame('medium')}/>
+        <Button style={styles.buttonDiff} title='Hard' onPress={() => goToGame('hard')}/>
+        <Button style={styles.buttonDiff} title='Random' onPress={() => goToGame('random')}/>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
+    flex: 1, alignItems: 'center', justifyContent: 'center'
   },
   buttonDifficulty: {
-    margin: 10,
+    marginVertical: 20,
     padding: 4,
-    flexDirection: 'row'
+    height: 50,
+    width: 300,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
+  buttonDiff:{
+    // flex: 2,
+    // textAlignVertical: 'center',
+    // textAlign: 'center',
+    // width: 40
   },
   title: {
-    fontSize: 30
+    fontSize: 50,
+    marginBottom: 80
   }
 });
