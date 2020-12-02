@@ -23,8 +23,8 @@ export default function Game({ navigation, route }) {
   const loading = useSelector(store => store.loading)
   const status = useSelector(store => store.status)
   const isValidate = useSelector(store => store.isValidate)
-  const [timer, setTimer] = React.useState()
   const time = useSelector(store => store.time)
+  const [timer, setTimer] = React.useState()
   const dispatch = useDispatch()
   const { name, difficulty } = route.params
   
@@ -38,7 +38,7 @@ export default function Game({ navigation, route }) {
   useEffect(() => {
     switch (status) {
       case 'unsolved':
-        Alert.alert('Unsolved', "Awww, seems your work is still unsolved...")
+        Alert.alert('Unsolved', "Awww, seems your work is still unsolved")
         break;
       case 'notStarted':
         break;
@@ -49,7 +49,7 @@ export default function Game({ navigation, route }) {
         Alert.alert('Broken', "Heyy, becareful! somethings wrong with your work!")
         break;
       case 'solved':
-        dispatch({ type: 'CALCULATE_SCORE', time: time})
+        dispatch({ type: 'CALCULATE_SCORE', time: time, name: name, difficulty })
         clearInterval(timer)
         return navigation.navigate('Finish', { name, difficulty })
       default:
