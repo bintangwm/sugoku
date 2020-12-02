@@ -36,7 +36,7 @@ export default function Finish({ navigation, route }) {
             color='green'
           />
           <View style={styles.leaderBoard}>
-            <Text style={{ fontSize: 25 }}>Score Board</Text>
+            <Text style={{ fontSize: 25 }}>Leader Board</Text>
             <View style={styles.leaderBoardHeader}>
               <View style={styles.leaderBoardItem}>
                 <Text style={{ fontSize: 20 }}>Player name</Text>
@@ -102,18 +102,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '25%'
+    marginTop: '40%'
   },
   congratulation: {
     fontSize: 50
   },
   name: {
-    marginTop: 10,
+    marginTop: '20%',
     fontSize: 40
   },
   difficulty: {
     fontSize: 15,
-    marginBottom: 15
+    marginBottom: '40%'
   },
   score: {
     fontSize: 15,

@@ -48,6 +48,9 @@ function reducer(state=initialState, action) {
         difficulty: action.difficulty
       }
       newScoreBoard = state.scoreBoard.concat(payload)
+      newScoreBoard.sort(function(a, b) {
+        return b.score - a.score;
+      });
       return {...state, score: score, time: 0, scoreBoard: newScoreBoard};
     case 'FETCH_BOARD':
       newBoard = action.payload
