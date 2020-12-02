@@ -5,12 +5,13 @@ import {
   Button,
   ImageBackground
 } from 'react-native';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { resetGame } from '../actions/index'
 import bgImage from '../assets/bohemian.jpg'
 
 export default function Finish({ navigation, route }) {
   const { name, difficulty } = route.params
+  const score = useSelector(store => store.score)
   const dispatch = useDispatch()
 
   function goToHomeScreen() {
@@ -22,6 +23,7 @@ export default function Finish({ navigation, route }) {
     <ImageBackground source={bgImage} style={styles.container}>
       <Text style={styles.congratulation}>Congratulation</Text>
       <Text style={styles.name}>{ name }</Text>
+      <Text style={styles.difficulty}>Score: { score }</Text>
       <Text style={styles.difficulty}>Difficulty: { difficulty }</Text>
       <Button 
         title='Play Again'

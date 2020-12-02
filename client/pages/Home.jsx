@@ -34,10 +34,10 @@ export default function Home({ navigation }) {
         value={name}
       />
       <View style={styles.buttonDifficulty}>
-        <Button style={styles.buttonDiff} title='Easy' onPress={() => goToGame('easy')}/>
-        <Button style={styles.buttonDiff} title='Medium' onPress={() => goToGame('medium')}/>
-        <Button style={styles.buttonDiff} title='Hard' onPress={() => goToGame('hard')}/>
-        <Button style={styles.buttonDiff} title='Random' onPress={() => goToGame('random')}/>
+        <Button color='#15d151' title='Easy' onPress={() => goToGame('easy')}/>
+        <Button color='#259ef5' title='Medium' onPress={() => goToGame('medium')}/>
+        <Button color='red' style={styles.buttonDiff} title='Hard' onPress={() => goToGame('hard')}/>
+        <Button color='grey' style={styles.buttonDiff} title='Random' onPress={() => goToGame('random')}/>
       </View>
     </ImageBackground>
   );

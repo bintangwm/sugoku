@@ -7,17 +7,26 @@ const initialState = {
   loading: true,
   status: 'notStarted',
   isValidate: false,
-  time: 0
+  time: 0,
+  score: 0,
+  isGameStarted: true
 }
 
 function reducer(state=initialState, action) {
   let newBoard = []
   let isValidate = state.isValidate
+  let time = state.time
+  let score = 0
   switch (action.type) {
+    case 'SET_GAMESTARTED':
+      return {...state, isGameStarted: action.payload};
+    case 'RESET_TIME':
+      return {...state, time: 0};
     case 'SET_TIME':
-      return {...state, time: state.time++};
+      time++
+      return {...state, time: time++};
     case 'RESET_GAME':
-      return {...state, difficulty: 'random', board: [], loading: true, status: 'notStarted', playerBoard: [] };
+      return {...state, difficulty: 'random', board: [], loading: true, status: 'notStarted', playerBoard: [], time: 0, score: 0, isGameStarted:true };
     case 'SET_STATUS':
       if (action.currentStatus === state.status) {
         isValidate = !isValidate
@@ -26,6 +35,12 @@ function reducer(state=initialState, action) {
       return {...state, status: action.status, isValidate: isValidate};
     case 'SET_LOADING':
       return {...state, loading: action.payload};
+    case 'CALCULATE_SCORE':
+      score = 100000 - action.time
+      if (score < 0) {
+        score = 0
+      }
+      return {...state, score: score, time: 0};
     case 'FETCH_BOARD':
       newBoard = action.payload
       return {...state, board: newBoard, playerBoard: newBoard};

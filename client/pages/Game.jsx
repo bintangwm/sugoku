@@ -9,7 +9,8 @@ import {
   ActivityIndicator,
   Alert,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  BackHandler
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchBoard, validateResult, solveResult } from '../actions/index'
@@ -22,41 +23,50 @@ export default function Game({ navigation, route }) {
   const loading = useSelector(store => store.loading)
   const status = useSelector(store => store.status)
   const isValidate = useSelector(store => store.isValidate)
-  // const time = useSelector(store => store.time)
-  const [time, setTime] = React.useState(0)
+  const [timer, setTimer] = React.useState()
+  const time = useSelector(store => store.time)
   const dispatch = useDispatch()
   const { name, difficulty } = route.params
   
   useEffect(() => {
+    clearInterval(timer)
+    dispatch({ type: 'RESET_TIME' })
     dispatch(fetchBoard(difficulty))
     timeStart()
   }, [])
 
   useEffect(() => {
     switch (status) {
+      case 'unsolved':
+        Alert.alert('Unsolved', "Awww, seems your work is still unsolved...")
+        break;
       case 'notStarted':
-        // Alert.alert('Game Started!', "Solve the Sudoku as fast as you can! :D")
+        break;
+      case 'unsolved':
+          Alert.alert('Unsolved', "Awww, seems your work is still unsolved")
+          break;
+      case 'broken':
+        Alert.alert('Broken', "Heyy, becareful! somethings wrong with your work!")
         break;
       case 'solved':
-        // Alert.alert('Congratulation', "You've solved the game! Yeayyy!")
+        dispatch({ type: 'CALCULATE_SCORE', time: time})
+        clearInterval(timer)
         return navigation.navigate('Finish', { name, difficulty })
       default:
-        Alert.alert(status, `Awww, seems your work is still ${status}`)
+        Alert.alert(status, `Oops, something wrong: ${status}`)
         break;
     }
   }, [status, isValidate])
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => true)
+  }, [BackHandler])
+
   function timeStart() {
-    // var timer = setInterval(frame, 1000);
-    // function frame() {
-    //   // if (time >= 5) {
-    //     //   clearInterval(timer);
-    //     // } else {
-    //       // }
-    //       const timeUpdate = time + 1
-    //       console.log(timeUpdate, 'timer');
-    //   setTime(timeUpdate)
-    // }
+    setTimer(setInterval(frame, 1000));
+    function frame() {
+      dispatch({ type: 'SET_TIME' })
+    }
   }
 
   function validateBoard() {
@@ -77,8 +87,8 @@ export default function Game({ navigation, route }) {
 
   return (
     <ImageBackground source={bgImage} style={styles.imageBackground}>
-      <Text style={styles.title}>SUDO-Q</Text>
-      <Text>Time: {time}</Text>
+      {/* <Text style={styles.title}>SUDO-Q</Text> */}
+      <Text style={styles.time}>Time: {time}</Text>
       <StatusBar style="auto" />
       <View style={styles.board}>
         {
@@ -141,7 +151,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginBottom: 50
+    marginBottom: 20
   },
   buttonWrap:{
     flexDirection: 'row', 
@@ -150,5 +160,9 @@ const styles = StyleSheet.create({
     height: 50,
     width: 200,
     marginTop: 20
+  },
+  time: {
+    marginVertical:20,
+    fontSize:20
   }
 });
